@@ -12,10 +12,12 @@ QMAKE_CXXFLAGS += -std=c++11 -Wdisabled-optimization -Wvector-operation-performa
 	-W -Wpointer-arith -Wcast-qual -Wcast-align -Wwrite-strings -Wmissing-noreturn
 
 SOURCES += main.cpp \
-    adaptink.cpp
+    adaptink.cpp \
+    canvas.cpp
 
 HEADERS += \
-    adaptink.hpp
+    adaptink.hpp \
+    canvas.hpp
 
 FORMS += \
     adaptink.ui

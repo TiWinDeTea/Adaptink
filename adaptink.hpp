@@ -18,6 +18,11 @@ public:
 
 	~Adaptink();
 
+private slots:
+	void on_actionChangePen_triggered();
+
+	void on_actionQuit_triggered();
+
 private:
 	Ui::Adaptink* ui;
 };

@@ -8,3 +8,11 @@ Adaptink::Adaptink(QWidget *parent) : QMainWindow(parent), ui(new Ui::Adaptink) 
 Adaptink::~Adaptink() {
 	delete ui;
 }
+
+void Adaptink::on_actionChangePen_triggered() {
+	// TODO
+}
+
+void Adaptink::on_actionQuit_triggered() {
+	QCoreApplication::quit();
+}

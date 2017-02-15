@@ -11,11 +11,15 @@ class Adaptink : public QMainWindow {
 	Q_OBJECT
 
 public:
-	explicit Adaptink(QWidget *parent = 0);
+	explicit Adaptink(QWidget *parent = nullptr);
+	Adaptink(const Adaptink&) = delete;
+	Adaptink(Adaptink&&) = delete;
+	Adaptink& operator=(const Adaptink&) = delete;
+
 	~Adaptink();
 
 private:
-	Ui::Adaptink *ui;
+	Ui::Adaptink* ui;
 };
 
 #endif // ADAPTINK_HPP

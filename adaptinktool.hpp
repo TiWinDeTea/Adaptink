@@ -4,7 +4,8 @@
 enum AdaptinkTool {
 	Pencil,
 	Paintbrush,
-	Label
+	Label,
+	Rubber
 };
 
 #endif // ADAPTINKTOOL_HPP

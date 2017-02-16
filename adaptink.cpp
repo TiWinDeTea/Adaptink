@@ -22,19 +22,30 @@ void Adaptink::on_actionQuit_triggered() {
 void Adaptink::on_actionChangeColor_triggered() {
 	QColor color = QColorDialog::getColor(Qt::white, nullptr, tr("Pick a color"), QColorDialog::ShowAlphaChannel);
 	if (color != QColor::Invalid) {
-		m_ui->canvas->setPaintColor(color);
+		m_ui->dcanvas->front->setPaintColor(color);
 	}
 }
 
 void Adaptink::on_actionToolPencil_triggered() {
-	m_ui->canvas->setTool(Pencil);
+	m_ui->dcanvas->front->setTool(Pencil);
 }
 
 void Adaptink::on_actionToolBrush_triggered() {
-	m_ui->canvas->setTool(Paintbrush);
+	m_ui->dcanvas->front->setTool(Paintbrush);
 }
 
 void Adaptink::on_actionToolLabel_triggered() {
-	m_ui->canvas->setTool(Label);
+	m_ui->dcanvas->front->setTool(Label);
 }
 
+
+void Adaptink::on_actionRubber_triggered() {
+	m_ui->dcanvas->front->setTool(Rubber);
+}
+
+void Adaptink::on_actionSet_Background_color_triggered() {
+	QColor color = QColorDialog::getColor(Qt::white, nullptr, tr("Pick a color"), QColorDialog::ShowAlphaChannel);
+	if (color != QColor::Invalid) {
+		m_ui->dcanvas->background->setPalette(QPalette(color));
+	}
+}

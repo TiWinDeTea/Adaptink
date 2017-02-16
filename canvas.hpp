@@ -6,6 +6,7 @@
 #include <QApplication>
 
 class ScrollArea;
+class DCanvas;
 
 #include <adaptinktool.hpp>
 
@@ -44,6 +45,9 @@ private:
 	QPixmap m_pixmap;
 
 	QColor m_color;
+	QSize m_tool_size;
+
+	friend class DCanvas;
 };
 
 #endif // CANVAS_HPP

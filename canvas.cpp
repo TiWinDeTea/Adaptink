@@ -10,7 +10,8 @@ Canvas::Canvas(QWidget *parent) :
 	m_oldMousePos(),
 	m_mousePos(),
 	m_pixmap(),
-	m_color()
+	m_color(),
+	m_tool_size(5, 5)
 {
 }
 
@@ -42,22 +43,29 @@ void Canvas::paintEvent(QPaintEvent*) {
 	painter.drawPixmap(0, 0, m_pixmap);
 
 	if (m_repaintToSave) {
+		QPoint brush_size(m_tool_size.width(), m_tool_size.height());
+
 		painter.setPen(Qt::NoPen);
 		painter.setBrush(Qt::NoBrush);
 
 		switch (m_tool) {
 		case Pencil:
-			painter.setPen(QPen(m_color, 5, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-			painter.drawLine(m_oldMousePos, m_mousePos);
+			painter.setPen(QPen(m_color, brush_size.x(), Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
 			break;
 		case Paintbrush:
 			painter.setBrush(m_color);
-			painter.drawEllipse(m_mousePos, 5, 5);
+			painter.drawEllipse(m_mousePos - brush_size / 2, brush_size.x(), brush_size.y());
 			break;
 		case Label:
 			painter.setPen(m_color);
 			painter.setFont(QFont("Arial", 30));
 			painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
+			break;
+		case Rubber:
+			painter.setPen(Qt::GlobalColor::transparent);
+			painter.setBrush(Qt::GlobalColor::transparent);
+			painter.drawRect(QRect(m_mousePos - brush_size / 2, m_mousePos + brush_size / 2));
 			break;
 		default:
 			qDebug() << "Unexpected default case reached.";

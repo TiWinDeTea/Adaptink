@@ -15,14 +15,16 @@ SOURCES += main.cpp \
     adaptink.cpp \
 	canvas.cpp \
 	messagehandler.cpp \
-    scrollarea.cpp
+    scrollarea.cpp \
+    dcanvas.cpp
 
 HEADERS += \
     adaptink.hpp \
 	canvas.hpp \
 	messagehandler.hpp \
     scrollarea.hpp \
-    adaptinktool.hpp
+    adaptinktool.hpp \
+    dcanvas.hpp
 
 FORMS += \
     adaptink.ui

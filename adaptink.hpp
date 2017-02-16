@@ -31,6 +31,10 @@ private slots:
 
 	void on_actionToolLabel_triggered();
 
+	void on_actionRubber_triggered();
+
+	void on_actionSet_Background_color_triggered();
+
 private:
 	Ui::Adaptink* m_ui;
 };

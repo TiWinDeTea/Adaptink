@@ -21,11 +21,15 @@ public:
 	~Adaptink();
 
 private slots:
-	void on_actionChangePen_triggered();
-
 	void on_actionQuit_triggered();
 
 	void on_actionChangeColor_triggered();
+
+	void on_actionToolPencil_triggered();
+
+	void on_actionToolBrush_triggered();
+
+	void on_actionToolLabel_triggered();
 
 private:
 	Ui::Adaptink* m_ui;

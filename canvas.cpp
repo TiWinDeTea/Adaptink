@@ -1,10 +1,13 @@
+#include <QDebug>
 #include <QPainter>
 
-#include "canvas.hpp"
+#include <canvas.hpp>
 
 Canvas::Canvas(QWidget *parent) :
 	QWidget(parent),
 	m_repaintToSave(false),
+	m_tool(Pencil),
+	m_oldMousePos(),
 	m_mousePos(),
 	m_pixmap(),
 	m_color()
@@ -12,19 +15,24 @@ Canvas::Canvas(QWidget *parent) :
 }
 
 
-void Canvas::setPenColor(QColor color) {
+void Canvas::setPaintColor(QColor color) {
 	m_color = color;
+}
+
+void Canvas::setTool(AdaptinkTool tool) {
+	m_tool = tool;
 }
 
 // === protected ===
 
 void Canvas::mousePressEvent(QMouseEvent* event) {
-	m_mousePos = event->pos();
+	updateMousePos(event);
+	m_oldMousePos = m_mousePos;
 	draw();
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent* event) {
-	m_mousePos = event->pos();
+	updateMousePos(event);
 	draw();
 }
 
@@ -37,13 +45,30 @@ void Canvas::paintEvent(QPaintEvent*) {
 		painter.setPen(m_color);
 		painter.setBrush(m_color);
 
-		painter.drawEllipse(m_mousePos, 5, 5);
-		//painter.setFont(QFont("Arial", 30));
-		//painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
+		switch (m_tool) {
+		case Pencil:
+			painter.drawLine(m_oldMousePos, m_mousePos);
+			break;
+		case Paintbrush:
+			painter.drawEllipse(m_mousePos, 5, 5);
+			break;
+		case Label:
+			painter.setFont(QFont("Arial", 30));
+			painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
+			break;
+		default:
+			qDebug() << "Unexpected default case reached.";
+			break;
+		}
 	}
 }
 
 // === private ===
+
+void Canvas::updateMousePos(QMouseEvent* event) {
+	m_oldMousePos = m_mousePos;
+	m_mousePos = event->pos();
+}
 
 void Canvas::draw() {
 	m_repaintToSave = true;

@@ -21,7 +21,8 @@ HEADERS += \
     adaptink.hpp \
 	canvas.hpp \
 	messagehandler.hpp \
-    scrollarea.hpp
+    scrollarea.hpp \
+    adaptinktool.hpp
 
 FORMS += \
     adaptink.ui

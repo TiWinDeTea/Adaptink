@@ -7,6 +7,8 @@
 
 class ScrollArea;
 
+#include <adaptinktool.hpp>
+
 class Canvas final : public QWidget
 {
 	Q_OBJECT
@@ -14,7 +16,9 @@ public:
 	explicit Canvas(QWidget *parent = nullptr);
 	~Canvas() = default;
 
-	void setPenColor(QColor color);
+	void setPaintColor(QColor color);
+
+	void setTool(AdaptinkTool tool);
 
 signals:
 
@@ -28,10 +32,15 @@ protected:
 	void paintEvent(QPaintEvent* event);
 
 private:
+	void updateMousePos(QMouseEvent* event);
+
 	void draw();
 
 	bool m_repaintToSave;
 
+	AdaptinkTool m_tool;
+
+	QPoint m_oldMousePos;
 	QPoint m_mousePos;
 
 	QPixmap m_pixmap;

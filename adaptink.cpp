@@ -19,13 +19,22 @@ void Adaptink::on_actionQuit_triggered() {
 	QCoreApplication::quit();
 }
 
-void Adaptink::on_actionChangePen_triggered() {
-	// TODO
-}
-
 void Adaptink::on_actionChangeColor_triggered() {
 	QColor color = QColorDialog::getColor(Qt::white, nullptr, tr("Pick a color"), QColorDialog::ShowAlphaChannel);
 	if (color != QColor::Invalid) {
-		m_ui->canvas->setPenColor(color);
+		m_ui->canvas->setPaintColor(color);
 	}
 }
+
+void Adaptink::on_actionToolPencil_triggered() {
+	m_ui->canvas->setTool(Pencil);
+}
+
+void Adaptink::on_actionToolBrush_triggered() {
+	m_ui->canvas->setTool(Paintbrush);
+}
+
+void Adaptink::on_actionToolLabel_triggered() {
+	m_ui->canvas->setTool(Label);
+}
+

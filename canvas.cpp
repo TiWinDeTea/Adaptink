@@ -1,21 +1,30 @@
 #include <QPainter>
-#include <iostream>
 
 #include "canvas.hpp"
 
 Canvas::Canvas(QWidget *parent) : QWidget(parent),
 	m_repaintToSave(false),
 	m_mousePos(),
-	m_pixmap() {
+	m_pixmap(),
+	m_color()
+{}
+
+Canvas::~Canvas() {}
+
+void Canvas::setPenColor(QColor color) {
+	m_color = color;
 }
 
-Canvas::~Canvas() {
-}
+// === protected ===
 
 void Canvas::mousePressEvent(QMouseEvent* event) {
 	m_mousePos = event->pos();
-	drawAndSavePixmap();
-	repaint();
+	draw();
+}
+
+void Canvas::mouseMoveEvent(QMouseEvent* event) {
+	m_mousePos = event->pos();
+	draw();
 }
 
 void Canvas::paintEvent(QPaintEvent* event) {
@@ -23,15 +32,21 @@ void Canvas::paintEvent(QPaintEvent* event) {
 	painter.drawPixmap(0, 0, m_pixmap);
 
 	if (m_repaintToSave) {
-		painter.setPen(QColor(255, 0, 0, 50));
-		painter.setFont(QFont("Arial", 30));
-		painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
-		// TODO: add more interesting tools.
+		// general
+		painter.setPen(m_color);
+		painter.setBrush(m_color);
+
+		painter.drawEllipse(m_mousePos, 5, 5);
+		//painter.setFont(QFont("Arial", 30));
+		//painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
 	}
 }
 
-void Canvas::drawAndSavePixmap() {
+// === private ===
+
+void Canvas::draw() {
 	m_repaintToSave = true;
 	m_pixmap = QPixmap(grab());
 	m_repaintToSave = false;
+	repaint();
 }

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include <canvas.hpp>
+
 namespace Ui {
 class Adaptink;
 }
@@ -23,8 +25,10 @@ private slots:
 
 	void on_actionQuit_triggered();
 
+	void on_actionChangeColor_triggered();
+
 private:
-	Ui::Adaptink* ui;
+	Ui::Adaptink* m_ui;
 };
 
 #endif // ADAPTINK_HPP

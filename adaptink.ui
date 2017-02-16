@@ -125,6 +125,7 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionChangePen"/>
+   <addaction name="actionChangeColor"/>
   </widget>
   <action name="actionSave">
    <property name="text">
@@ -144,6 +145,11 @@
   <action name="actionChangePen">
    <property name="text">
     <string>change pen</string>
+   </property>
+  </action>
+  <action name="actionChangeColor">
+   <property name="text">
+    <string>change color</string>
    </property>
   </action>
  </widget>

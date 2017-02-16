@@ -4,12 +4,14 @@
 #include <QWidget>
 #include <QMouseEvent>
 
-class Canvas : public QWidget
+class Canvas final : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit Canvas(QWidget *parent = nullptr);
-	virtual ~Canvas();
+	~Canvas();
+
+	void setPenColor(QColor color);
 
 signals:
 
@@ -18,16 +20,20 @@ public slots:
 protected:
 	void mousePressEvent(QMouseEvent* event);
 
+	void mouseMoveEvent(QMouseEvent* event);
+
 	void paintEvent(QPaintEvent* event);
 
 private:
-	void drawAndSavePixmap();
+	void draw();
 
 	bool m_repaintToSave;
 
 	QPoint m_mousePos;
 
 	QPixmap m_pixmap;
+
+	QColor m_color;
 };
 
 #endif // CANVAS_HPP

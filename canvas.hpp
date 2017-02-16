@@ -3,13 +3,16 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QApplication>
+
+class ScrollArea;
 
 class Canvas final : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit Canvas(QWidget *parent = nullptr);
-	~Canvas();
+	~Canvas() = default;
 
 	void setPenColor(QColor color);
 

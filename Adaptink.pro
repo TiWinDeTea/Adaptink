@@ -14,12 +14,14 @@ QMAKE_CXXFLAGS += -std=c++11 -Wdisabled-optimization -Wvector-operation-performa
 SOURCES += main.cpp \
     adaptink.cpp \
 	canvas.cpp \
-	messagehandler.cpp
+	messagehandler.cpp \
+    scrollarea.cpp
 
 HEADERS += \
     adaptink.hpp \
 	canvas.hpp \
-	messagehandler.hpp
+	messagehandler.hpp \
+    scrollarea.hpp
 
 FORMS += \
     adaptink.ui

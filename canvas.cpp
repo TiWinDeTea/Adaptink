@@ -2,14 +2,15 @@
 
 #include "canvas.hpp"
 
-Canvas::Canvas(QWidget *parent) : QWidget(parent),
+Canvas::Canvas(QWidget *parent) :
+	QWidget(parent),
 	m_repaintToSave(false),
 	m_mousePos(),
 	m_pixmap(),
 	m_color()
-{}
+{
+}
 
-Canvas::~Canvas() {}
 
 void Canvas::setPenColor(QColor color) {
 	m_color = color;
@@ -27,7 +28,7 @@ void Canvas::mouseMoveEvent(QMouseEvent* event) {
 	draw();
 }
 
-void Canvas::paintEvent(QPaintEvent* event) {
+void Canvas::paintEvent(QPaintEvent*) {
 	QPainter painter(this);
 	painter.drawPixmap(0, 0, m_pixmap);
 
@@ -50,3 +51,4 @@ void Canvas::draw() {
 	m_repaintToSave = false;
 	repaint();
 }
+

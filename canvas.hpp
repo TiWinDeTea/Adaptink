@@ -32,8 +32,6 @@ protected:
 	void paintEvent(QPaintEvent* event);
 
 private:
-	void updateMousePos(QMouseEvent* event);
-
 	void draw();
 
 	bool m_repaintToSave;

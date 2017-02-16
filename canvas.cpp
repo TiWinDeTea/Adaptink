@@ -26,13 +26,14 @@ void Canvas::setTool(AdaptinkTool tool) {
 // === protected ===
 
 void Canvas::mousePressEvent(QMouseEvent* event) {
-	updateMousePos(event);
-	m_oldMousePos = m_mousePos;
+	m_oldMousePos = event->pos();
+	m_mousePos = event->pos();
 	draw();
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent* event) {
-	updateMousePos(event);
+	m_oldMousePos = m_mousePos;
+	m_mousePos = event->pos();
 	draw();
 }
 
@@ -66,11 +67,6 @@ void Canvas::paintEvent(QPaintEvent*) {
 }
 
 // === private ===
-
-void Canvas::updateMousePos(QMouseEvent* event) {
-	m_oldMousePos = m_mousePos;
-	m_mousePos = event->pos();
-}
 
 void Canvas::draw() {
 	m_repaintToSave = true;

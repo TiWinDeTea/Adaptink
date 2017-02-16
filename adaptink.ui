@@ -943,7 +943,7 @@
      <x>0</x>
      <y>0</y>
      <width>785</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -951,7 +951,7 @@
      <string>Fi&amp;le</string>
     </property>
     <addaction name="actionNew"/>
-    <addaction name="actionLoad"/>
+    <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
@@ -990,7 +990,7 @@
   </widget>
   <action name="actionSave">
    <property name="text">
-    <string>&amp;Save</string>
+    <string>Save</string>
    </property>
   </action>
   <action name="actionSave_as">
@@ -1000,12 +1000,12 @@
   </action>
   <action name="actionQuit">
    <property name="text">
-    <string>&amp;Quit</string>
+    <string>Quit</string>
    </property>
   </action>
   <action name="actionChangeColor">
    <property name="text">
-    <string>change color</string>
+    <string>Color</string>
    </property>
   </action>
   <action name="actionToolPencil">
@@ -1023,7 +1023,7 @@
     <string>Label</string>
    </property>
   </action>
-  <action name="actionLoad">
+  <action name="actionOpen">
    <property name="text">
     <string>&amp;Open</string>
    </property>
@@ -1043,7 +1043,10 @@
   </action>
   <action name="actionSet_Background_color">
    <property name="text">
-    <string>set Background color</string>
+    <string>Set background color</string>
+   </property>
+   <property name="toolTip">
+    <string>Set background color</string>
    </property>
   </action>
  </widget>

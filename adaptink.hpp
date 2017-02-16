@@ -5,6 +5,8 @@
 
 #include <canvas.hpp>
 
+const int RESTART_EXIT_STATUS = 17;
+
 namespace Ui {
 class Adaptink;
 }
@@ -23,6 +25,14 @@ public:
 private slots:
 	void on_actionQuit_triggered();
 
+	void on_actionNew_triggered();
+
+	void on_actionOpen_triggered();
+
+	void on_actionSave_triggered();
+
+	void on_actionSave_as_triggered();
+
 	void on_actionChangeColor_triggered();
 
 	void on_actionToolPencil_triggered();
@@ -37,6 +47,8 @@ private slots:
 
 private:
 	Ui::Adaptink* m_ui;
+
+	QString m_current_file_name;
 };
 
 #endif // ADAPTINK_HPP

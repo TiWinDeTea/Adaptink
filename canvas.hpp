@@ -21,6 +21,10 @@ public:
 
 	void setTool(AdaptinkTool tool);
 
+	void setPixmap(QPixmap pixmap);
+
+	QPixmap getPixmap();
+
 signals:
 
 public slots:

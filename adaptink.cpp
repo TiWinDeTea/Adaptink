@@ -1,12 +1,15 @@
 #include <QColorDialog>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <adaptink.hpp>
 #include <ui_adaptink.h>
+#include <dcanvas.hpp>
 
-#include <QDebug>
 Adaptink::Adaptink(QWidget *parent) :
 	QMainWindow(parent),
-	m_ui(new Ui::Adaptink)
+	m_ui(new Ui::Adaptink),
+	m_current_file_name()
 {
 	m_ui->setupUi(this);
 }
@@ -17,6 +20,55 @@ Adaptink::~Adaptink() {
 
 void Adaptink::on_actionQuit_triggered() {
 	QCoreApplication::quit();
+}
+
+void Adaptink::on_actionNew_triggered() {
+	QApplication::instance()->exit(RESTART_EXIT_STATUS);
+}
+
+void Adaptink::on_actionOpen_triggered() {
+	QString fileName = QFileDialog::getOpenFileName(this,
+													tr("Open file"),
+													QString(),
+													tr("All files (*);;JPEG image (*.jpg *.jpeg *.jpe);;PNG image (*.png);;Windows BMP image (*.bmp)"));
+
+	if (!fileName.isEmpty()) {
+		QPixmap pixmap;
+		if (!pixmap.load(fileName)) {
+			QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
+			return;
+		}
+
+		m_ui->dcanvas->front->setPixmap(pixmap);
+		m_ui->dcanvas->front->repaint();
+
+		m_current_file_name = fileName;
+	}
+}
+
+void Adaptink::on_actionSave_triggered() {
+	if (m_current_file_name.isEmpty()) {
+		on_actionSave_as_triggered();
+	} else {
+		if (!m_ui->dcanvas->front->getPixmap().save(m_current_file_name)) {
+			QMessageBox::critical(this, tr("Error"), tr("Could not save file"));
+		}
+	}
+}
+
+void Adaptink::on_actionSave_as_triggered() {
+	QString fileName = QFileDialog::getSaveFileName(this,
+													tr("Save file as"),
+													QString(),
+													tr("All files (*);;JPEG image (*.jpg *.jpeg *.jpe);;PNG image (*.png);;Windows BMP image (*.bmp)"));
+
+	if (!fileName.isEmpty()) {
+		if (!m_ui->dcanvas->front->getPixmap().save(fileName)) {
+			QMessageBox::critical(this, tr("Error"), tr("Could not save file"));
+		}
+
+		m_current_file_name = fileName;
+	}
 }
 
 void Adaptink::on_actionChangeColor_triggered() {

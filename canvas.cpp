@@ -24,6 +24,14 @@ void Canvas::setTool(AdaptinkTool tool) {
 	m_tool = tool;
 }
 
+void Canvas::setPixmap(QPixmap pixmap) {
+	m_pixmap = pixmap;
+}
+
+QPixmap Canvas::getPixmap() {
+	return m_pixmap;
+}
+
 // === protected ===
 
 void Canvas::mousePressEvent(QMouseEvent* event) {

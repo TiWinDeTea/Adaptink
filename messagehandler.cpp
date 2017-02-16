@@ -42,38 +42,53 @@ static const std::string MESSAGE_HANDLER_TEXT[] = { "[Debug]: ",
 													"[Fatal Error]: ",
 													"[Info]: " };
 
-void q_message_info(const std::string& header, const QMessageLogContext& context, const QString& msg);
-void q_message_debug(const std::string& header, const QMessageLogContext& context, const QString& msg);
-void q_message_warning(const std::string& header, const QMessageLogContext& context, const QString& msg);
-void q_message_critical(const std::string& header, const QMessageLogContext& context, const QString& msg);
-void q_message_fatal(const std::string& header, const QMessageLogContext& context, const QString& msg);
+struct MessageLogContext {
+	const char* file;
+	int line;
+	const char* function;
+	const char* category;
+};
+
+void q_message_info(const std::string& header, const MessageLogContext& context, const QString& msg);
+void q_message_debug(const std::string& header, const MessageLogContext& context, const QString& msg);
+void q_message_warning(const std::string& header, const MessageLogContext& context, const QString& msg);
+void q_message_critical(const std::string& header, const MessageLogContext& context, const QString& msg);
+void q_message_fatal(const std::string& header, const MessageLogContext& context, const QString& msg);
 void console_set_color(const std::string& color);
 void console_reset_color();
-std::string realPath(const std::string& file);
+std::string realPath(const char* file);
 
 void q_message_handler(QtMsgType type, const QMessageLogContext &context, const QString &msg) {
+
+	MessageLogContext local_context;
+	if (context.function == nullptr) {
+		local_context = { context.file, context.line, "Unknown method", context.category };
+	} else {
+		local_context = { context.file, context.line, context.function, context.category };
+	}
+
 	switch (type) {
 	case QtDebugMsg:
-		q_message_debug(MESSAGE_HANDLER_TEXT[type], context, msg);
+		q_message_debug(MESSAGE_HANDLER_TEXT[type], local_context, msg);
 		break;
 	case QtWarningMsg:
-		q_message_warning(MESSAGE_HANDLER_TEXT[type], context, msg);
+		q_message_warning(MESSAGE_HANDLER_TEXT[type], local_context, msg);
 		break;
 	case QtCriticalMsg:
-		q_message_critical(MESSAGE_HANDLER_TEXT[type], context, msg);
+		q_message_critical(MESSAGE_HANDLER_TEXT[type], local_context, msg);
 		break;
 	case QtFatalMsg:
-		q_message_fatal(MESSAGE_HANDLER_TEXT[type], context, msg);
+		q_message_fatal(MESSAGE_HANDLER_TEXT[type], local_context, msg);
 		break;
 	case QtInfoMsg:
-		q_message_info(MESSAGE_HANDLER_TEXT[type], context, msg);
+		q_message_info(MESSAGE_HANDLER_TEXT[type], local_context, msg);
 		break;
 	default:
 		break;
 	}
 }
 
-inline void q_message_info(const std::string& header, const QMessageLogContext& context, const QString& msg) {
+inline void q_message_info(const std::string& header, const MessageLogContext& context, const QString& msg) {
 	console_set_color("blue");
 	std::cout << header;
 	console_reset_color();
@@ -82,7 +97,7 @@ inline void q_message_info(const std::string& header, const QMessageLogContext& 
 	std::cout << "\n" << std::endl;
 }
 
-inline void q_message_debug(const std::string& header, const QMessageLogContext& context, const QString& msg) {
+inline void q_message_debug(const std::string& header, const MessageLogContext& context, const QString& msg) {
 	console_set_color("yellow");
 	std::cout << header;
 	console_reset_color();
@@ -91,7 +106,7 @@ inline void q_message_debug(const std::string& header, const QMessageLogContext&
 	std::cout << "\n" << std::endl;
 }
 
-inline void q_message_warning(const std::string& header, const QMessageLogContext& context, const QString& msg) {
+inline void q_message_warning(const std::string& header, const MessageLogContext& context, const QString& msg) {
 	console_set_color("yellow");
 	std::cout << header << "\n    ";
 	console_reset_color();
@@ -100,7 +115,7 @@ inline void q_message_warning(const std::string& header, const QMessageLogContex
 	std::cout << "\n" << std::endl;
 }
 
-inline void q_message_critical(const std::string& header, const QMessageLogContext& context, const QString& msg) {
+inline void q_message_critical(const std::string& header, const MessageLogContext& context, const QString& msg) {
 	console_set_color("red");
 	std::cout << header << "\n    " << std::flush;
 	console_reset_color();
@@ -118,7 +133,7 @@ inline void q_message_critical(const std::string& header, const QMessageLogConte
 	std::cout << context.function << "\n\n" << std::endl;
 }
 
-inline void q_message_fatal(const std::string& header, const QMessageLogContext& context, const QString& msg) {
+inline void q_message_fatal(const std::string& header, const MessageLogContext& context, const QString& msg) {
 	q_message_critical(header, context, msg);
 	std::terminate();
 }
@@ -154,13 +169,19 @@ inline void console_reset_color() {
 #endif
 }
 
-inline std::string realPath(const std::string& file) {
+inline std::string realPath(const char* file) {
+	if (file == nullptr) {
+		return "Unknow file";
+	}
 	char* path;
 #ifdef MSGH_OS_WINDOWS
 	path = static_cast<char*>(malloc(512 * sizeof(char)));
 	strcpy(path, file);
 #else
-	path = realpath(file.c_str(), nullptr);
+	path = realpath(file, nullptr);
+	if (path == nullptr) {
+		return std::string(file);
+	}
 #endif
 	std::string real_path(path);
 	free(path);

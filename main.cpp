@@ -1,10 +1,14 @@
 #include <QApplication>
-#include "adaptink.hpp"
+#include <QtGlobal> // qInstallMessageHandler
+
+#include <adaptink.hpp>
+#include <messagehandler.hpp>
 
 int main(int argc, char **argv)
 {
-	QApplication app (argc, argv);
+	qInstallMessageHandler(q_message_handler);
 
+	QApplication app (argc, argv);
 	Adaptink adapatink;
 	adapatink.show();
 

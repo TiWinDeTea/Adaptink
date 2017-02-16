@@ -9,6 +9,7 @@ class Canvas : public QWidget
 	Q_OBJECT
 public:
 	explicit Canvas(QWidget *parent = nullptr);
+	virtual ~Canvas();
 
 signals:
 
@@ -20,9 +21,13 @@ protected:
 	void paintEvent(QPaintEvent* event);
 
 private:
-	int m_mouseX;
-	int m_mouseY;
+	void drawAndSavePixmap();
 
+	bool m_repaintToSave;
+
+	QPoint m_mousePos;
+
+	QPixmap m_pixmap;
 };
 
 #endif // CANVAS_HPP

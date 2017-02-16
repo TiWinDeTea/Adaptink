@@ -73,6 +73,7 @@ void Canvas::paintEvent(QPaintEvent*) {
 		case Rubber:
 			painter.setPen(Qt::GlobalColor::transparent);
 			painter.setBrush(Qt::GlobalColor::transparent);
+			painter.setCompositionMode(QPainter::CompositionMode_Clear);
 			painter.drawRect(QRect(m_mousePos - brush_size / 2, m_mousePos + brush_size / 2));
 			break;
 		default:

@@ -952,8 +952,9 @@
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
+    <addaction name="actionExport"/>
+    <addaction name="actionExportAs"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -962,10 +963,10 @@
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBarBrush">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>colors</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>RightToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
@@ -975,10 +976,10 @@
   </widget>
   <widget class="QToolBar" name="toolBarAdaptinkTool">
    <property name="windowTitle">
-    <string>toolBar_2</string>
+    <string>toolbox</string>
    </property>
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
@@ -988,14 +989,25 @@
    <addaction name="actionToolLabel"/>
    <addaction name="actionRubber"/>
   </widget>
-  <action name="actionSave">
+  <widget class="QToolBar" name="toolBarContextual">
+   <property name="windowTitle">
+    <string>contextual toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>RightToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="actionExport">
    <property name="text">
-    <string>Save</string>
+    <string>Export</string>
    </property>
   </action>
-  <action name="actionSave_as">
+  <action name="actionExportAs">
    <property name="text">
-    <string>Sa&amp;ve as</string>
+    <string>Export as</string>
    </property>
   </action>
   <action name="actionQuit">

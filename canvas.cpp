@@ -24,6 +24,11 @@ void Canvas::setTool(AdaptinkTool tool) {
 	m_tool = tool;
 }
 
+void Canvas::setToolSize(int size) {
+	m_tool_size.setHeight(size);
+	m_tool_size.setWidth(size);
+}
+
 void Canvas::setPixmap(QPixmap pixmap) {
 	m_pixmap = pixmap;
 }
@@ -58,25 +63,26 @@ void Canvas::paintEvent(QPaintEvent*) {
 
 		switch (m_tool) {
 		case Pencil:
-			painter.setPen(QPen(m_color, brush_size.x(), Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
+			painter.setBrush(m_color);
+			painter.drawEllipse(m_mousePos - brush_size / 4, brush_size.x(), brush_size.y());
+			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+			painter.drawLine(m_oldMousePos - brush_size / 4, m_mousePos - brush_size / 4);
 			break;
 		case Paintbrush:
 			painter.setBrush(m_color);
-			painter.drawEllipse(m_mousePos - brush_size / 2, brush_size.x(), brush_size.y());
-			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
-			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
+			painter.drawEllipse(m_mousePos - brush_size / 4, brush_size.x(), brush_size.y());
+			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+			painter.drawLine(m_oldMousePos - brush_size / 4, m_mousePos - brush_size / 4);
 			break;
 		case Label:
 			painter.setPen(m_color);
-			painter.setFont(QFont("Arial", 30));
+			painter.setFont(QFont("Arial", m_tool_size.height()));
 			painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
 			break;
 		case Rubber:
-			painter.setPen(QPen(Qt::GlobalColor::transparent, brush_size.x(), Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 			painter.setBrush(Qt::GlobalColor::transparent);
 			painter.setCompositionMode(QPainter::CompositionMode_Clear);
-			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
+			painter.drawRect(QRect(m_mousePos - brush_size / 2, m_mousePos + brush_size / 2));
 			break;
 		default:
 			qDebug() << "Unexpected default case reached.";

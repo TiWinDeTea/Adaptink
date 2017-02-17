@@ -29,9 +29,9 @@ private slots:
 
 	void on_actionOpen_triggered();
 
-	void on_actionSave_triggered();
+	void on_actionExport_triggered();
 
-	void on_actionSave_as_triggered();
+	void on_actionExportAs_triggered();
 
 	void on_actionChangeColor_triggered();
 
@@ -46,6 +46,8 @@ private slots:
 	void on_actionSet_Background_color_triggered();
 
 private:
+	void exportCanvas();
+
 	Ui::Adaptink* m_ui;
 
 	QString m_current_file_name;

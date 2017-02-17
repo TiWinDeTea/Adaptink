@@ -1,6 +1,8 @@
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSpinBox>
+#include <QAction>
 
 #include <adaptink.hpp>
 #include <ui_adaptink.h>
@@ -12,6 +14,12 @@ Adaptink::Adaptink(QWidget *parent) :
 	m_current_file_name()
 {
 	m_ui->setupUi(this);
+
+	QSpinBox* tool_size_spin_box = new QSpinBox();
+	tool_size_spin_box->setValue(5);
+	m_ui->dcanvas->front->setToolSize(5);
+	m_ui->toolBarContextual->insertWidget(new QAction, tool_size_spin_box);
+	connect(tool_size_spin_box, SIGNAL(valueChanged(int)), m_ui->dcanvas->front, SLOT(setToolSize(int)));
 }
 
 Adaptink::~Adaptink() {
@@ -46,28 +54,23 @@ void Adaptink::on_actionOpen_triggered() {
 	}
 }
 
-void Adaptink::on_actionSave_triggered() {
+void Adaptink::on_actionExport_triggered() {
 	if (m_current_file_name.isEmpty()) {
-		on_actionSave_as_triggered();
+		on_actionExportAs_triggered();
 	} else {
-		if (!m_ui->dcanvas->front->getPixmap().save(m_current_file_name)) {
-			QMessageBox::critical(this, tr("Error"), tr("Could not save file"));
-		}
+		exportCanvas();
 	}
 }
 
-void Adaptink::on_actionSave_as_triggered() {
+void Adaptink::on_actionExportAs_triggered() {
 	QString fileName = QFileDialog::getSaveFileName(this,
 													tr("Save file as"),
 													QString(),
 													tr("All files (*);;JPEG image (*.jpg *.jpeg *.jpe);;PNG image (*.png);;Windows BMP image (*.bmp)"));
 
 	if (!fileName.isEmpty()) {
-		if (!m_ui->dcanvas->front->getPixmap().save(fileName)) {
-			QMessageBox::critical(this, tr("Error"), tr("Could not save file"));
-		}
-
 		m_current_file_name = fileName;
+		exportCanvas();
 	}
 }
 
@@ -99,5 +102,23 @@ void Adaptink::on_actionSet_Background_color_triggered() {
 	QColor color = QColorDialog::getColor(Qt::white, nullptr, tr("Pick a color"), QColorDialog::ShowAlphaChannel);
 	if (color != QColor::Invalid) {
 		m_ui->dcanvas->background->setPalette(QPalette(color));
+	}
+}
+
+// === private ===
+
+void Adaptink::exportCanvas() {
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::question(this, tr("Save with background?"), tr("Save with background?"), QMessageBox::Yes | QMessageBox::No);
+
+	bool success;
+	if (reply == QMessageBox::Yes) {
+		success = m_ui->dcanvas->grab().save(m_current_file_name);
+	} else {
+		success = m_ui->dcanvas->front->grab().save(m_current_file_name);
+	}
+
+	if (!success) {
+		QMessageBox::critical(this, tr("Error"), tr("Could not save file"));
 	}
 }

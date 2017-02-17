@@ -28,6 +28,7 @@ public:
 signals:
 
 public slots:
+	void setToolSize(int size);
 
 protected:
 	void mousePressEvent(QMouseEvent* event);

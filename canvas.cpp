@@ -7,8 +7,8 @@ Canvas::Canvas(QWidget *parent) :
 	QWidget(parent),
 	m_repaintToSave(false),
 	m_tool(Pencil),
-	m_oldMousePos(),
-	m_mousePos(),
+	m_old_mouse_pos(),
+	m_mouse_pos(),
 	m_pixmap(),
 	m_color(),
 	m_tool_size(5, 5)
@@ -40,14 +40,14 @@ QPixmap Canvas::getPixmap() {
 // === protected ===
 
 void Canvas::mousePressEvent(QMouseEvent* event) {
-	m_oldMousePos = event->pos();
-	m_mousePos = event->pos();
+	m_old_mouse_pos = event->pos();
+	m_mouse_pos = event->pos();
 	draw();
 }
 
 void Canvas::mouseMoveEvent(QMouseEvent* event) {
-	m_oldMousePos = m_mousePos;
-	m_mousePos = event->pos();
+	m_old_mouse_pos = m_mouse_pos;
+	m_mouse_pos = event->pos();
 	draw();
 }
 
@@ -64,25 +64,25 @@ void Canvas::paintEvent(QPaintEvent*) {
 		switch (m_tool) {
 		case Pencil:
 			painter.setBrush(m_color);
-			painter.drawEllipse(m_mousePos - brush_size / 4, brush_size.x(), brush_size.y());
+			painter.drawEllipse(m_mouse_pos - brush_size / 4, brush_size.x(), brush_size.y());
 			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-			painter.drawLine(m_oldMousePos - brush_size / 4, m_mousePos - brush_size / 4);
+			painter.drawLine(m_old_mouse_pos - brush_size / 4, m_mouse_pos - brush_size / 4);
 			break;
 		case Paintbrush:
 			painter.setBrush(m_color);
-			painter.drawEllipse(m_mousePos - brush_size / 4, brush_size.x(), brush_size.y());
+			painter.drawEllipse(m_mouse_pos - brush_size / 4, brush_size.x(), brush_size.y());
 			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-			painter.drawLine(m_oldMousePos - brush_size / 4, m_mousePos - brush_size / 4);
+			painter.drawLine(m_old_mouse_pos - brush_size / 4, m_mouse_pos - brush_size / 4);
 			break;
 		case Label:
 			painter.setPen(m_color);
 			painter.setFont(QFont("Arial", m_tool_size.height()));
-			painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
+			painter.drawText(QRect(m_mouse_pos.x(), m_mouse_pos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
 			break;
 		case Rubber:
 			painter.setBrush(Qt::GlobalColor::transparent);
 			painter.setCompositionMode(QPainter::CompositionMode_Clear);
-			painter.drawRect(QRect(m_mousePos - brush_size / 2, m_mousePos + brush_size / 2));
+			painter.drawRect(QRect(m_mouse_pos - brush_size / 2, m_mouse_pos + brush_size / 2));
 			break;
 		default:
 			qDebug() << "Unexpected default case reached.";

@@ -44,8 +44,8 @@ private:
 
 	AdaptinkTool m_tool;
 
-	QPoint m_oldMousePos;
-	QPoint m_mousePos;
+	QPoint m_old_mouse_pos;
+	QPoint m_mouse_pos;
 
 	QPixmap m_pixmap;
 

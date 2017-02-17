@@ -64,6 +64,8 @@ void Canvas::paintEvent(QPaintEvent*) {
 		case Paintbrush:
 			painter.setBrush(m_color);
 			painter.drawEllipse(m_mousePos - brush_size / 2, brush_size.x(), brush_size.y());
+			painter.setPen(QPen(m_color, brush_size.x() * 2, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
 			break;
 		case Label:
 			painter.setPen(m_color);
@@ -71,10 +73,10 @@ void Canvas::paintEvent(QPaintEvent*) {
 			painter.drawText(QRect(m_mousePos.x(), m_mousePos.y(), width(), height()), Qt::AlignmentFlag::AlignLeft, "WOW");
 			break;
 		case Rubber:
-			painter.setPen(Qt::GlobalColor::transparent);
+			painter.setPen(QPen(Qt::GlobalColor::transparent, brush_size.x(), Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 			painter.setBrush(Qt::GlobalColor::transparent);
 			painter.setCompositionMode(QPainter::CompositionMode_Clear);
-			painter.drawRect(QRect(m_mousePos - brush_size / 2, m_mousePos + brush_size / 2));
+			painter.drawLine(m_oldMousePos - brush_size / 2, m_mousePos - brush_size / 2);
 			break;
 		default:
 			qDebug() << "Unexpected default case reached.";

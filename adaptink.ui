@@ -1015,7 +1015,10 @@
   </action>
   <action name="actionToolBrush">
    <property name="text">
-    <string>Brush</string>
+    <string>Paintbrush</string>
+   </property>
+   <property name="toolTip">
+    <string>Paintbrush</string>
    </property>
   </action>
   <action name="actionToolLabel">
